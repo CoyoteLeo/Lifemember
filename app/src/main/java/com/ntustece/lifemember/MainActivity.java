@@ -1,5 +1,7 @@
 package com.ntustece.lifemember;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +29,23 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        checkFirstRun();
+
+        Button buttonTest = (Button) findViewById(R.id.buttonTest);
+        buttonTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent showWD = new Intent();
+                showWD.setClass(MainActivity.this, Question.class);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("Eng", Eng[position]);
+//                bundle.putString("Chi", Chi[position]);
+//                showWD.putExtras(bundle);
+                startActivity(showWD);
+            }
+        });
+
     }
 
     @Override
@@ -48,5 +68,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void checkFirstRun() {
+        Util.copyDB(this);
     }
 }
