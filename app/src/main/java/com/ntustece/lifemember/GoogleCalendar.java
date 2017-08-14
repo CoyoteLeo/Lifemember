@@ -13,13 +13,8 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -38,7 +33,6 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -48,7 +42,6 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class GoogleCalendar extends Activity
         implements EasyPermissions.PermissionCallbacks {
     GoogleAccountCredential mCredential;
-    private TextView mOutputText;
     private Button mCallApiButton;
     ProgressDialog mProgress;
 
@@ -64,17 +57,6 @@ public class GoogleCalendar extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        LinearLayout activityLayout = new LinearLayout(this);
-//        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-//                LinearLayout.LayoutParams.MATCH_PARENT,
-//                LinearLayout.LayoutParams.MATCH_PARENT);
-//        activityLayout.setLayoutParams(lp);
-//        activityLayout.setOrientation(LinearLayout.VERTICAL);
-//        activityLayout.setPadding(16, 16, 16, 16);
-//
-//        ViewGroup.LayoutParams tlp = new ViewGroup.LayoutParams(
-//                ViewGroup.LayoutParams.WRAP_CONTENT,
-//                ViewGroup.LayoutParams.WRAP_CONTENT);
 
         mCallApiButton = new Button(this);
         mCallApiButton.setText(BUTTON_TEXT);
@@ -82,26 +64,13 @@ public class GoogleCalendar extends Activity
             @Override
             public void onClick(View v) {
                 mCallApiButton.setEnabled(false);
-//                mOutputText.setText("");
                 getResultsFromApi();
                 mCallApiButton.setEnabled(true);
             }
         });
-//        activityLayout.addView(mCallApiButton);
-
-//        mOutputText = new TextView(this);
-//        mOutputText.setLayoutParams(tlp);
-//        mOutputText.setPadding(16, 16, 16, 16);
-//        mOutputText.setVerticalScrollBarEnabled(true);
-//        mOutputText.setMovementMethod(new ScrollingMovementMethod());
-//        mOutputText.setText(
-//                "Click the \'" + BUTTON_TEXT + "\' button to test the API.");
-//        activityLayout.addView(mOutputText);
 
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Calling Google Calendar API ...");
-
-//        setContentView(activityLayout);
 
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
@@ -116,7 +85,6 @@ public class GoogleCalendar extends Activity
             chooseAccount();
         } else if (!isDeviceOnline()) {
             Toast.makeText(GoogleCalendar.this, "No network connection available.", Toast.LENGTH_SHORT).show();
-//            mOutputText.setText("No network connection available.");
         } else {
             new MakeRequestTask(mCredential).execute();
         }
@@ -153,8 +121,6 @@ public class GoogleCalendar extends Activity
             case REQUEST_GOOGLE_PLAY_SERVICES:
                 if (resultCode != RESULT_OK) {
                     Toast.makeText(GoogleCalendar.this, "This app requires Google Play Services. Please install " + "Google Play Services on your device and relaunch this app.", Toast.LENGTH_SHORT).show();
-//                    mOutputText.setText(
-//                            "This app requires Google Play Services. Please install " + "Google Play Services on your device and relaunch this app.");
                 } else {
                     getResultsFromApi();
                 }
@@ -251,7 +217,6 @@ public class GoogleCalendar extends Activity
         }
 
         @Override
-//        protected List<String> doInBackground(Void... params) {
         protected List<Event> doInBackground(Void... params) {
             try {
                 return getDataFromApi();
@@ -262,7 +227,6 @@ public class GoogleCalendar extends Activity
             }
         }
 
-        //        private List<String> getDataFromApi() throws IOException {
         private List<Event> getDataFromApi() throws IOException {
             DateTime now = new DateTime(System.currentTimeMillis());
             /* 取得事件list */
@@ -283,7 +247,6 @@ public class GoogleCalendar extends Activity
 
         @Override
         protected void onPreExecute() {
-//            mOutputText.setText("");
             mProgress.show();
         }
 
@@ -292,11 +255,8 @@ public class GoogleCalendar extends Activity
             mProgress.hide();
             if (output == null || output.size() == 0) {
                 Toast.makeText(GoogleCalendar.this, "No results returned.", Toast.LENGTH_SHORT).show();
-//                mOutputText.setText("No results returned.");
             } else {
                 Toast.makeText(GoogleCalendar.this, "Get results!!", Toast.LENGTH_SHORT).show();
-//                output.add(0, "Data retrieved using the Google Calendar API:");
-//                mOutputText.setText(TextUtils.join("\n", output));
             }
         }
 
@@ -314,11 +274,9 @@ public class GoogleCalendar extends Activity
                             GoogleCalendar.REQUEST_AUTHORIZATION);
                 } else {
                     Toast.makeText(GoogleCalendar.this, "The following error occurred:\n" + mLastError.getMessage(), Toast.LENGTH_SHORT).show();
-//                    mOutputText.setText("The following error occurred:\n" + mLastError.getMessage());
                 }
             } else {
                 Toast.makeText(GoogleCalendar.this, "Request cancelled.", Toast.LENGTH_SHORT).show();
-//                mOutputText.setText("Request cancelled.");
             }
         }
     }
