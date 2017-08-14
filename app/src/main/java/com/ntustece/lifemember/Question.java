@@ -23,6 +23,8 @@ public class Question extends Activity {
     SQLiteOpenHelper dbHelper = new DBHelper(this);
     SQLiteDatabase db;
 
+    private ScreenListener listener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +95,7 @@ public class Question extends Activity {
                 int input = Integer.valueOf(editTextPrice.getText().toString());
                 if (input == price) {
                     finish();
+                    MainActivity.tag = true;
                 } else {
                     editTextPrice.setText("");
                 }
@@ -134,6 +137,7 @@ public class Question extends Activity {
                             public void onClick(View view) {
                                 if (ansPos == finalI) {
                                     finish();
+                                    MainActivity.tag = true;
                                 } else {
                                     setUnClickable(button[finalI]);
                                 }
@@ -173,6 +177,7 @@ public class Question extends Activity {
                 public void onClick(View view) {
                     if (ansPos == finalI) {
                          finish();
+                        MainActivity.tag = true;
                     } else {
                         setUnClickable(button[finalI]);
                     }
