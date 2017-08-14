@@ -134,13 +134,16 @@ public class Question extends Activity implements EasyPermissions.PermissionCall
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int input = Integer.valueOf(editTextPrice.getText().toString());
-                if (input == price) {
-                    finish();
-                } else {
-                    editTextPrice.setText("");
+                String t = editTextPrice.getText().toString();
+                if(!t.isEmpty()) {
+                    int input = Integer.valueOf(t);
+                    if (input == price) {
+                        finish();
+                    } else {
+                        editTextPrice.setText("");
+                    }
+                    tryTime[0]++;
                 }
-                tryTime[0]++;
 
                 //改成選擇題
                 if (tryTime[0] == 3) {
@@ -233,7 +236,7 @@ public class Question extends Activity implements EasyPermissions.PermissionCall
 
     void setUnClickable(Button button) {
         button.setClickable(false);
-        button.setBackgroundColor(0xaaaaaa);
+        button.setVisibility(View.INVISIBLE);
     }
 
     /* Google Calendar API */
@@ -255,8 +258,8 @@ public class Question extends Activity implements EasyPermissions.PermissionCall
         } else if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
         } else if (!isDeviceOnline()) {
-            Toast.makeText(Question.this, "No network connection available.",
-                    Toast.LENGTH_SHORT).show();
+//            Toast.makeText(Question.this, "No network connection available.",
+//                    Toast.LENGTH_SHORT).show();
         } else {
             if (questionType == 1)
                 new Question.MakeRequestTask(mCredential).execute();
@@ -292,7 +295,7 @@ public class Question extends Activity implements EasyPermissions.PermissionCall
         switch (requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
                 if (resultCode != RESULT_OK) {
-                    Toast.makeText(Question.this, "This app requires Google Play Services. Please install " + "Google Play Services on your device and relaunch this app.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(Question.this, "This app requires Google Play Services. Please install " + "Google Play Services on your device and relaunch this app.", Toast.LENGTH_SHORT).show();
                 } else {
                     getResultsFromApi();
                 }
@@ -437,9 +440,9 @@ public class Question extends Activity implements EasyPermissions.PermissionCall
             mProgress.hide();
             if (!output) {
                 finish();
-                Toast.makeText(Question.this, "No results returned.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(Question.this, "No results returned.", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(Question.this, "Get results!!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(Question.this, "Get results!!", Toast.LENGTH_SHORT).show();
                 QT1();
                 editTextLayout.setVisibility(View.GONE);
                 buttonLayout.setVisibility(View.VISIBLE);
@@ -459,10 +462,10 @@ public class Question extends Activity implements EasyPermissions.PermissionCall
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
                             GoogleCalendar.REQUEST_AUTHORIZATION);
                 } else {
-                    Toast.makeText(Question.this, "The following error occurred:\n" + mLastError.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(Question.this, "The following error occurred:\n" + mLastError.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(Question.this, "Request cancelled.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(Question.this, "Request cancelled.", Toast.LENGTH_SHORT).show();
             }
         }
     }
