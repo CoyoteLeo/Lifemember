@@ -53,13 +53,16 @@ public class GoogleCalendar extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getResultsFromApi();
 
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Calling Google Calendar API ...");
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
+
+
+        // 觸發函數
+        getResultsFromApi();
     }
 
 
@@ -69,7 +72,8 @@ public class GoogleCalendar extends Activity
         } else if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
         } else if (!isDeviceOnline()) {
-            Toast.makeText(GoogleCalendar.this, "No network connection available.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(GoogleCalendar.this, "No network connection available.",
+                    Toast.LENGTH_SHORT).show();
         } else {
             new MakeRequestTask(mCredential).execute();
         }
@@ -196,6 +200,7 @@ public class GoogleCalendar extends Activity
             JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
             mService = new com.google.api.services.calendar.Calendar.Builder(
                     transport, jsonFactory, credential)
+                    // setApplicationName 不知道會不會有差@@
                     .setApplicationName("Google Calendar API Android Quickstart")
                     .build();
         }
@@ -212,7 +217,6 @@ public class GoogleCalendar extends Activity
         }
 
         private List<Event> getDataFromApi() throws IOException {
-            DateTime now = new DateTime(System.currentTimeMillis());
             /* 取得事件list */
             Events events = mService.events().list("primary")
 //                    .setMaxResults()
